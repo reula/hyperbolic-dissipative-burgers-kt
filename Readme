@@ -1,6 +1,13 @@
 This directory contains the code for solving a 1-D 
-force-free shocks with second order accuracy away from the shock.
+burgers equation as a hyperbolic equation.
 This is done using the centered algorithm of Tadmor Kurganov
+
+the equations are:
+
+U_t - (0.5 U^2 + sV)_x = 0
+V_t - cU_x = -cV
+
+
 
 Identification of which component of the vector of variables is given
 in first_macro.h. There you also specify several things, like the number
