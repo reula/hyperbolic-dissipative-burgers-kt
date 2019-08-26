@@ -1,0 +1,54 @@
+#
+# Makefile for qm_3d_main.c RUN: typing make in this directory
+#
+# CFLAGS=-c -O3 -Wall -g
+CC=gcc
+#CC=icc
+# CFLAGS= -O3 -Wall -ggdb3
+ CFLAGS= -O3 -Wall
+# $(CC) $(CFLAGS)
+
+all: qm_exec qm_main.o adisco_1d.o inidat.o  integ.o rkc.o qm_eq.o derivs_1d.o binio.o util.o input.o 
+
+qm_exec: qm_main.c first_macro_1d.h structs_1d.h gen_1d.h qm_main.o inidat.o integ.o rkc.o adisco_1d.o qm_eq.o derivs_1d.o binio.o util.o input.o 
+	$(CC) $(CFLAGS) -L/usr/local/lib -L. -I/usr/include -ffast-math -finline-functions -o qm_exec qm_main.o inidat.o integ.o rkc.o adisco_1d.o qm_eq.o derivs_1d.o binio.o util.o input.o  -lm #-lbbhutil #-lsv
+
+qm_main.o: first_macro_1d.h structs_1d.h gen_1d.h qm_main.c
+	$(CC) $(CFLAGS) -c -o qm_main.o qm_main.c
+
+adisco_1d.o: first_macro_1d.h structs_1d.h gen_1d.h adisco_1d.c
+	$(CC) $(CFLAGS) -c -o adisco_1d.o adisco_1d.c
+
+inidat.o: first_macro_1d.h structs_1d.h gen_1d.h  inidat.c
+	$(CC) $(CFLAGS) -c -o inidat.o inidat.c
+
+integ.o: first_macro_1d.h structs_1d.h gen_1d.h integ.c
+	$(CC) $(CFLAGS) -c -finline-functions -o integ.o integ.c
+
+rkc.o: first_macro_1d.h structs_1d.h gen_1d.h rkc.c
+	$(CC) $(CFLAGS) -c -finline-functions -o rkc.o rkc.c
+
+qm_eq.o: qm_eq.c first_macro_1d.h structs_1d.h gen_1d.h
+	$(CC) $(CFLAGS) -c -finline-functions -o qm_eq.o qm_eq.c
+
+input.o: input.c first_macro_1d.h structs_1d.h gen_1d.h
+	$(CC) $(CFLAGS) -c -o input.o input.c
+
+#output.o: output.c first_macro_1d.h structs_1d.h gen_1d.h
+#	$(CC) $(CFLAGS) -c -o output.o output.c
+
+derivs_1d.o: derivs_1d.c first_macro_1d.h structs_1d.h gen_1d.h derivs_1d.h
+	$(CC) $(CFLAGS) -c -ffast-math -finline-functions -o derivs_1d.o derivs_1d.c
+
+binio.o: binio.c
+	$(CC) $(CFLAGS) -c -DLITTLE -o binio.o binio.c
+
+util.o: util.c
+	$(CC) $(CFLAGS) -c -o util.o util.c
+
+
+clean:
+	rm -f *.o qm_1d_exec tranSVFile core *~
+
+limpia: 
+	rm -f Dump/run_*

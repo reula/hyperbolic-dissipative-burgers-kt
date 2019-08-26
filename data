@@ -1,0 +1,121 @@
+#
+# data file for ff equation
+#
+#
+#
+#                                 Grid parameters
+#
+initial_time=0.0
+#final_time=10
+final_time=2.0
+#number of steps at which pointwise data is saved
+#data_steps=10
+#data_steps=20
+data_steps=200
+# number of steps between pointwise data savings (total_steps = data_steps x int_steps)
+#int_steps=320
+#int_steps=160
+#int_steps=80
+int_steps=200
+#int_steps=200
+#int_steps=40
+#int_steps=100
+# number of pointwise output between two 1d outputs
+factor_1d_steps=1
+#
+start_grid=0
+final_grid=800
+#
+initial_x=-1.0
+final_x=1.0
+#
+#                                 FUNCTION PARAMETERS 
+#
+mm=0.0
+#
+a=1. # This is Bx, it has to be given also as a0 for the initial data.
+#a=2.
+# 
+c=40. # This is V_t = c(U_x - V)
+s=0.00050  # This is U_t = U U_x - s V
+#
+#
+#  outgoing normals to fases, first digit = coord. second = value */
+#
+nx_10=-1.0
+#
+nx_11=1.0
+# 
+#
+# dissipation parameter (default 0.25)
+#
+# good for boundary case.
+#sigma=0.02 
+#sigma=0.0833333333333333333
+#sigma=0.0236111111111111111
+#sigma=-0.006349206349206349
+#sigma=0.000015
+#value for rk3,rk4 2-4, 800 points
+sigma=0.025
+#value for 6th order dissipation (4-6)
+#sigma=0.000025
+#sigma=0.
+#
+#      Initial data parameters 
+#
+initial_data_type=1
+#
+# 1 Rotador para periodico
+# 2 Sweet-Parker  c0=Sx, b0=BY, a0=BX=a
+# 3 Sweet-Parker con derivada suave.
+# 4 Sweet-Parker peri'odico
+# 5 Otro caso
+# 6 Completo
+# 7 SP-Discontinuo 
+a0=1.0  # valor de Bx
+k_a_10=300.0
+#k_a_10=0.0
+shift_a0=0.0
+#
+#c0=-0.20  #valor de Sx
+c0=-0.40
+k_c_10=00.0
+shift_c0=0.5
+#
+a1=0.0
+k_a_11=0.0
+shift_a1=0.0
+#
+c1=0.0
+k_c_11=0.0
+shift_c1=0.0
+#
+b0=0.50 #valor de By
+sigma_b0=20.0
+c0_1=0.850
+#
+# this is now been used for the conductivity initial condition
+#
+b1=1.0
+sigma_b1=20.0
+#sigma_b1=0.0
+c1_1=0.25
+#
+#
+#   Ploting Parameters
+#
+#Host name (host.domain.name or IP):
+host_name=localhost
+#File name
+
+file_name=burger_per_0005
+#
+#file_name=try
+#
+# points where we what to get values and region where they are averaged 
+#
+x[0]=0.50
+dx[0]=0.01
+#
+grid_plot_factor=1
+

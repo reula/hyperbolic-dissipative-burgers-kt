@@ -1,0 +1,45 @@
+This directory contains the code for solving a 1-D 
+force-free shocks with second order accuracy away from the shock.
+This is done using the centered algorithm of Tadmor Kurganov
+
+Identification of which component of the vector of variables is given
+in first_macro.h. There you also specify several things, like the number
+of grid points, etc.
+
+Other parameters and initial boundary conditions are given in the file "data"
+
+
+To run it do:
+
+First create a subdirectory Current and install all files there, then create
+there a subdirectory Dump 
+
+then 
+
+make 
+
+and then 
+
+./ff_exec
+B
+A
+ff_exec
+
+The output is managed in the file adisco.c 
+
+To see the .dat files use (for instance) xmgrace: Data->import->ASCHI->block and choose block 2 and 3 (the first is the time, second position (grid value) and the third the field value.
+
+To see the .pyg files use pygraph *.pyg 
+
+pygraph is installed from: https://bitbucket.org/dradice/pygraph/overview
+
+The initial data is in inidat.c
+The equations are in mhd_eq_3d.c
+The main in mhd_main.c
+The i/o functions in adisco.c
+The derivatives are computed using the Q matrix as in Kreiss. This is
+implemented in deriv_3d.c. (for different Q's see the definition
+of DERIV first_macro.h)
+ 
+
+
