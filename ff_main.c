@@ -24,6 +24,8 @@ struct globals globals;
 
 /***********************   Helper functions   ******************************/
 
+static inline void get_max(char inst, struct field_array *y, struct GRID_PAR *grid, FLOAT *max);
+
 /* Allocate a set of fields at once in huge pages if possible */
 void alloc_field_data(size_t nfields, size_t field_elems, FLOAT ** data) {
     FLOAT * memblock;
@@ -114,7 +116,8 @@ struct timeval start, stop, end;
 double tiempo;
 
 
-
+FLOAT V_max = 0.0;
+FLOAT dUdx_max = 0.0;
 
 
 
@@ -303,9 +306,14 @@ integ(&y,grd_ptr,equation_par_ptr,FF,RKX);
 #endif //IMAX
 
 
-// 	printf("time after integ in main = %f",y.time); 
+//printf("time after integ in main = %f",y.time); 
+//printf('time = %f, V_max = % f, dUdx_max = %f \n', time, V_max, dUdx_max);
+//fflush(stdout);
 /* printf("Out of integ \n");  */
 
+get_max('V', &y, grd_ptr, &V_max);
+get_max('D', &y, grd_ptr, &dUdx_max);
+printf("time = %f, V_max = %f, dUdx_max = %f \n", y.time, V_max, dUdx_max);
 
       //printf("...");
       fflush(stdout);
@@ -369,3 +377,31 @@ return(0);
 }
 
 
+static inline void get_max(char inst, struct field_array *y, struct GRID_PAR *grid_1d_ptr, FLOAT *max){
+		int ni_1 = (*grid_1d_ptr).start_grid; 
+		int nf_1 = (*grid_1d_ptr).final_grid; 
+		FLOAT xi = (*grid_1d_ptr).initial_x;
+		FLOAT xf = (*grid_1d_ptr).final_x;
+		FLOAT dt = (*grid_1d_ptr).time_step;
+		FLOAT h_1 = (FLOAT)(nf_1-ni_1)/(xf-xi);
+		int grid_ind1;
+
+	switch (inst) {// switch
+		case 'V':{// case 'V' 
+			for (grid_ind1 = ni_1; grid_ind1 < nf_1; ++grid_ind1){
+					if (fabs(y->u[V][grid_ind1]) > (*max)){
+						(*max) = (FLOAT)fabs(y->u[V][grid_ind1]);
+					}
+			}
+		}
+		break;
+		
+		case 'D':{
+			for (grid_ind1 = ni_1; grid_ind1< nf_1; ++grid_ind1){
+					if (fabs(y->u[U][(grid_ind1+1) % nf_1] - y->u[U][grid_ind1] ) * h_1 > (*max)){(*max) = fabs(y->u[U][(grid_ind1+1) % nf_1] - y->u[U][grid_ind1] ) * h_1;}
+			}
+		}
+		break;
+	}
+}
+		
