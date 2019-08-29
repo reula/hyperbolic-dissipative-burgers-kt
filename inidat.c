@@ -139,5 +139,5 @@ switch (initial_data_type){
 
 DERIV(grid_1d_ptr, y_a_ptr->u[U], y_a_ptr->u[V]);
 
-  printf("<LI>Inidat finished </br></LI>\n"); 
+//  printf("<LI>Inidat finished </br></LI>\n"); 
 }

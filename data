@@ -16,15 +16,20 @@ data_steps=200
 #int_steps=320
 #int_steps=160
 #int_steps=80
-int_steps=200
 #int_steps=200
+#int_steps=400
+#int_steps=800
+int_steps=1600
 #int_steps=40
 #int_steps=100
 # number of pointwise output between two 1d outputs
 factor_1d_steps=1
 #
 start_grid=0
-final_grid=800
+#final_grid=800
+#final_grid=1600
+#final_grid=3200
+final_grid=6400
 #
 initial_x=-1.0
 final_x=1.0

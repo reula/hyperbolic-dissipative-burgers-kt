@@ -116,8 +116,6 @@ struct timeval start, stop, end;
 double tiempo;
 
 
-FLOAT V_max = 0.0;
-FLOAT dUdx_max = 0.0;
 
 
 
@@ -222,37 +220,7 @@ PRINT_MACRO_VALUE(DISS)
 	
 //  ADISCO_POINT('O', &plot, &grd, &y);
 
-/*     creates initial data                            */
 
-inidat(&y,grd_ptr,&init_parameters);
-
-/* write initial data to file                          */ 
-
-/* plot data */
-      
-	
- 
-
-//    	plot_ptr = ADISCO('P',  &plot, &grd, &y); 
-
-	
-//    ADISCO_POINT('P',  &plot, &grd, &y); 
-	
-		plot_ptr = adisco_aschi_1d('P',  &plot, &grd, &y);
-
-		plot_ptr = adisco_pygraph_1d('W',  &plot, &grd, &y);
-
-
-  /*     creates potential function */
-
-		// exit(0); 
-
-/* inipot(pot_ptr,&pot_parameters, &grd, plot_ptr); */
-
-
-#ifdef BUMP_TEST
-exit(0);
-#endif
 
   /* makes initial time-interval */
 
@@ -290,6 +258,55 @@ fflush(stdout);
 gettimeofday(&start, NULL);
 
 
+
+// *******************************************************
+// BIG LOOP START
+// *******************************************************
+int loop, big_loop = 100;
+
+for (loop = 0; loop < big_loop; loop++){
+
+FLOAT V_max = 0.0;
+FLOAT dUdx_max = 0.0;
+
+
+
+// *******************************************************
+
+/*     creates initial data                            */
+
+inidat(&y,grd_ptr,&init_parameters);
+
+/* write initial data to file                          */ 
+
+/* plot data */
+      
+	
+ 
+
+//    	plot_ptr = ADISCO('P',  &plot, &grd, &y); 
+
+	
+//    ADISCO_POINT('P',  &plot, &grd, &y); 
+	
+//		plot_ptr = adisco_aschi_1d('P',  &plot, &grd, &y);
+
+//		plot_ptr = adisco_pygraph_1d('W',  &plot, &grd, &y);
+
+
+  /*     creates potential function */
+
+		// exit(0); 
+
+/* inipot(pot_ptr,&pot_parameters, &grd, plot_ptr); */
+
+
+#ifdef BUMP_TEST
+exit(0);
+#endif
+
+
+
   /* Take data_steps */ 
   
 
@@ -313,7 +330,7 @@ integ(&y,grd_ptr,equation_par_ptr,FF,RKX);
 
 get_max('V', &y, grd_ptr, &V_max);
 get_max('D', &y, grd_ptr, &dUdx_max);
-printf("time = %f, V_max = %f, dUdx_max = %f \n", y.time, V_max, dUdx_max);
+//printf("time = %f, V_max = %f, dUdx_max = %f \n", y.time, V_max, dUdx_max);
 
       //printf("...");
       fflush(stdout);
@@ -325,7 +342,7 @@ printf("time = %f, V_max = %f, dUdx_max = %f \n", y.time, V_max, dUdx_max);
 			  		  plot_ptr = ADISCO('P', &plot, &grd, &y);  
 			  #endif
 		  plot_ptr->time_slice = k_outer;
-		  plot_ptr = adisco_pygraph_1d('A',  &plot, &grd, &y);
+		  //plot_ptr = adisco_pygraph_1d('A',  &plot, &grd, &y);
 		  //plot_ptr = ADISCO('P', &plot, &grd, &y);
 		
       }
@@ -345,8 +362,22 @@ fflush(stdout);
 	
 //  plot_ptr = adisco_aschi_1d('P', &plot, &grd, &y); // printing the last value in aschi at .dat files.
 
-  plot_ptr = ADISCO('P', &plot, &grd, &y);
+//  plot_ptr = ADISCO('P', &plot, &grd, &y);
 //		  norm_Energy(&grd, equation_par_ptr,&y);
+
+
+// ************************************************
+// BIG LOOP END
+// ************************************************
+
+printf(" %f,  %f, %f \n", equation_parameters.s, V_max, dUdx_max);
+
+equation_parameters.s = equation_parameters.s + 0.001; 
+
+
+}
+// ************************************************
+
 
 gettimeofday(&end, NULL);
 
@@ -380,10 +411,10 @@ return(0);
 static inline void get_max(char inst, struct field_array *y, struct GRID_PAR *grid_1d_ptr, FLOAT *max){
 		int ni_1 = (*grid_1d_ptr).start_grid; 
 		int nf_1 = (*grid_1d_ptr).final_grid; 
-		FLOAT xi = (*grid_1d_ptr).initial_x;
-		FLOAT xf = (*grid_1d_ptr).final_x;
-		FLOAT dt = (*grid_1d_ptr).time_step;
-		FLOAT h_1 = (FLOAT)(nf_1-ni_1)/(xf-xi);
+//		FLOAT xi = (*grid_1d_ptr).initial_x;
+//		FLOAT xf = (*grid_1d_ptr).final_x;
+//		FLOAT dt = (*grid_1d_ptr).time_step;
+//		FLOAT h_1 = (FLOAT)(nf_1-ni_1)/(xf-xi);
 		int grid_ind1;
 
 	switch (inst) {// switch
@@ -398,7 +429,7 @@ static inline void get_max(char inst, struct field_array *y, struct GRID_PAR *gr
 		
 		case 'D':{
 			for (grid_ind1 = ni_1; grid_ind1< nf_1; ++grid_ind1){
-					if (fabs(y->u[U][(grid_ind1+1) % nf_1] - y->u[U][grid_ind1] ) * h_1 > (*max)){(*max) = fabs(y->u[U][(grid_ind1+1) % nf_1] - y->u[U][grid_ind1] ) * h_1;}
+					if (fabs(y->u[U][(grid_ind1+1) % nf_1] - y->u[U][grid_ind1] )  > (*max)){(*max) = fabs(y->u[U][(grid_ind1+1) % nf_1] - y->u[U][grid_ind1] );}
 			}
 		}
 		break;
