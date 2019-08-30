@@ -24,7 +24,11 @@ struct globals globals;
 
 /***********************   Helper functions   ******************************/
 
-static inline void get_max(char inst, struct field_array *y, struct GRID_PAR *grid, FLOAT *max);
+static inline void get_max_V(struct field_array *y, struct GRID_PAR *grid, FLOAT *max);
+static inline void get_max_DU(struct field_array *y, struct GRID_PAR *grid, FLOAT *max);
+static inline FLOAT norm_Energy(struct GRID_PAR *grid_1d_ptr,
+        struct FUNCTION_PAR *function_par_ptr,
+		struct field_array  *fields_ptr);
 
 /* Allocate a set of fields at once in huge pages if possible */
 void alloc_field_data(size_t nfields, size_t field_elems, FLOAT ** data) {
@@ -328,10 +332,11 @@ integ(&y,grd_ptr,equation_par_ptr,FF,RKX);
 //fflush(stdout);
 /* printf("Out of integ \n");  */
 
-get_max('V', &y, grd_ptr, &V_max);
-get_max('D', &y, grd_ptr, &dUdx_max);
+get_max_V(&y, grd_ptr, &V_max);
+get_max_DU(&y, grd_ptr, &dUdx_max);
 
-printf("time = %f, V_max = %f, dUdx_max = %f \n", y.time, V_max, dUdx_max);
+
+printf("time = %f, Energy = %f, V_max = %f, dUdx_max = %f \n", norm_Energy(grd_ptr, equation_par_ptr, &y), y.time, V_max, dUdx_max);
 
 
       //printf("...");
@@ -376,7 +381,7 @@ fflush(stdout);
 
 printf(" %f,  %f, %f \n", equation_parameters.s, V_max, dUdx_max);
 
-equation_parameters.s = equation_parameters.s + 0.001; 
+equation_parameters.s = equation_parameters.s + 0.0005; 
 
 
 }
@@ -411,7 +416,7 @@ printf("finishing \n");
 return(0);
 }
 
-
+/*
 static inline void get_max(char inst, struct field_array *y, struct GRID_PAR *grid_1d_ptr, FLOAT *max){
 		int ni_1 = (*grid_1d_ptr).start_grid; 
 		int nf_1 = (*grid_1d_ptr).final_grid; 
@@ -439,4 +444,57 @@ static inline void get_max(char inst, struct field_array *y, struct GRID_PAR *gr
 		break;
 	}
 }
+* */
+
+static inline void get_max_V(struct field_array *y, struct GRID_PAR *grid_1d_ptr, FLOAT *max){
+		int ni_1 = (*grid_1d_ptr).start_grid; 
+		int nf_1 = (*grid_1d_ptr).final_grid; 
+//		FLOAT xi = (*grid_1d_ptr).initial_x;
+//		FLOAT xf = (*grid_1d_ptr).final_x;
+//		FLOAT dt = (*grid_1d_ptr).time_step;
+//		FLOAT h_1 = (FLOAT)(nf_1-ni_1)/(xf-xi);
+		int grid_ind1;
+ 
+			for (grid_ind1 = ni_1; grid_ind1 < nf_1; ++grid_ind1){
+					if (fabs(y->u[V][grid_ind1]) > (*max)){
+						(*max) = (FLOAT)fabs(y->u[V][grid_ind1]);
+					}
+			}
+		}
+
+static inline void get_max_DU(struct field_array *y, struct GRID_PAR *grid_1d_ptr, FLOAT *max){
+		int ni_1 = (*grid_1d_ptr).start_grid; 
+		int nf_1 = (*grid_1d_ptr).final_grid; 
+//		FLOAT xi = (*grid_1d_ptr).initial_x;
+//		FLOAT xf = (*grid_1d_ptr).final_x;
+//		FLOAT dt = (*grid_1d_ptr).time_step;
+//		FLOAT h_1 = (FLOAT)(nf_1-ni_1)/(xf-xi);
+		int grid_ind1;
+
+
+			for (grid_ind1 = ni_1; grid_ind1< nf_1; ++grid_ind1){
+					if (fabs(y->u[U][(grid_ind1+1) % nf_1] - y->u[U][grid_ind1] )  > (*max)){(*max) = fabs(y->u[U][(grid_ind1+1) % nf_1] - y->u[U][grid_ind1] );}
+			}
+		}
+
+static inline FLOAT norm_Energy(struct GRID_PAR *grid_1d_ptr,
+        struct FUNCTION_PAR *function_par_ptr,
+		struct field_array  *y){
+			
+		int ni_1 = (*grid_1d_ptr).start_grid; 
+		int nf_1 = (*grid_1d_ptr).final_grid; 
+		FLOAT xi = (*grid_1d_ptr).initial_x;
+		FLOAT xf = (*grid_1d_ptr).final_x;
+		FLOAT dt = (*grid_1d_ptr).time_step;
+		FLOAT h_1 = (FLOAT)(nf_1-ni_1)/(xf-xi);
+		int grid_ind1;
+
+		FLOAT E = 0.0;;
+		
+			for (grid_ind1 = ni_1; grid_ind1< nf_1; ++grid_ind1){
+				E = E + function_par_ptr->s * y->u[U][grid_ind1]*y->u[U][grid_ind1] + function_par_ptr->c * y->u[U][grid_ind1]*y->u[U][grid_ind1];
+			}
+			
+		return(E*h_1);
+		}
 		
