@@ -330,7 +330,9 @@ integ(&y,grd_ptr,equation_par_ptr,FF,RKX);
 
 get_max('V', &y, grd_ptr, &V_max);
 get_max('D', &y, grd_ptr, &dUdx_max);
-//printf("time = %f, V_max = %f, dUdx_max = %f \n", y.time, V_max, dUdx_max);
+
+printf("time = %f, V_max = %f, dUdx_max = %f \n", y.time, V_max, dUdx_max);
+
 
       //printf("...");
       fflush(stdout);
@@ -342,8 +344,10 @@ get_max('D', &y, grd_ptr, &dUdx_max);
 			  		  plot_ptr = ADISCO('P', &plot, &grd, &y);  
 			  #endif
 		  plot_ptr->time_slice = k_outer;
-		  //plot_ptr = adisco_pygraph_1d('A',  &plot, &grd, &y);
-		  //plot_ptr = ADISCO('P', &plot, &grd, &y);
+#ifndef BIG_LOOP
+		  plot_ptr = adisco_pygraph_1d('A',  &plot, &grd, &y);
+		  plot_ptr = ADISCO('P', &plot, &grd, &y);
+#endif
 		
       }
 
