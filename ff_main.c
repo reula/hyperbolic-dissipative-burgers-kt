@@ -266,12 +266,13 @@ gettimeofday(&start, NULL);
 // *******************************************************
 // BIG LOOP START
 // *******************************************************
+
 int loop, big_loop = 50;
 
 for (loop = 0; loop < big_loop; loop++){
 
 FLOAT V_max = 0.0;
-FLOAT dUdx_max = 0.0;
+FLOAT dU_max = 0.0;
 
 
 
@@ -293,9 +294,9 @@ inidat(&y,grd_ptr,&init_parameters);
 	
 //    ADISCO_POINT('P',  &plot, &grd, &y); 
 	
-//		plot_ptr = adisco_aschi_1d('P',  &plot, &grd, &y);
+		plot_ptr = adisco_aschi_1d('P',  &plot, &grd, &y);
 
-//		plot_ptr = adisco_pygraph_1d('W',  &plot, &grd, &y);
+		plot_ptr = adisco_pygraph_1d('W',  &plot, &grd, &y);
 
 
   /*     creates potential function */
@@ -333,9 +334,11 @@ integ(&y,grd_ptr,equation_par_ptr,FF,RKX);
 /* printf("Out of integ \n");  */
 
 get_max_V(&y, grd_ptr, &V_max);
-get_max_DU(&y, grd_ptr, &dUdx_max);
+get_max_DU(&y, grd_ptr, &dU_max);
 
-//printf("time = %f, Energy = %f, V_max = %f, dUdx_max = %f \n", norm_Energy(grd_ptr, equation_par_ptr, &y), y.time, V_max, dUdx_max);
+
+printf("time = %f, Energy = %f, V_max = %f, dU_max = %f \n", y.time, norm_Energy(grd_ptr, equation_par_ptr, &y), V_max, dU_max);
+
 
       //printf("...");
       fflush(stdout);
@@ -347,8 +350,10 @@ get_max_DU(&y, grd_ptr, &dUdx_max);
 			  		  plot_ptr = ADISCO('P', &plot, &grd, &y);  
 			  #endif
 		  plot_ptr->time_slice = k_outer;
-		  //plot_ptr = adisco_pygraph_1d('A',  &plot, &grd, &y);
-		  //plot_ptr = ADISCO('P', &plot, &grd, &y);
+#ifndef BIG_LOOP
+		  plot_ptr = adisco_pygraph_1d('A',  &plot, &grd, &y);
+		  plot_ptr = ADISCO('P', &plot, &grd, &y);
+#endif
 		
       }
 
@@ -375,7 +380,7 @@ fflush(stdout);
 // BIG LOOP END
 // ************************************************
 
-printf(" %f,  %f, %f \n", equation_parameters.s, V_max, dUdx_max);
+printf(" %f,  %f, %f \n", equation_parameters.s, V_max, dU_max);
 
 equation_parameters.s = equation_parameters.s + 0.0002; 
 
@@ -491,6 +496,6 @@ static inline FLOAT norm_Energy(struct GRID_PAR *grid_1d_ptr,
 				E = E + function_par_ptr->s * y->u[U][grid_ind1]*y->u[U][grid_ind1] + function_par_ptr->c * y->u[U][grid_ind1]*y->u[U][grid_ind1];
 			}
 			
-		return(E*h_1);
+		return(E / h_1);
 		}
 		

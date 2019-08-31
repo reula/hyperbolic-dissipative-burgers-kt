@@ -43,7 +43,7 @@ mm=0.0
 a=1. # This is Bx, it has to be given also as a0 for the initial data.
 #a=2.
 # 
-c=40. # This is V_t = c(U_x - V)
+c=40. # This is V_t = c(U_x - V
 s=0.008 # This is U_t = U U_x - s V
 #
 #
@@ -115,7 +115,7 @@ c1_1=0.25
 host_name=localhost
 #File name
 
-file_name=burger_per_01
+file_name=burger_per_p012
 #
 #file_name=try
 #
