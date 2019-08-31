@@ -266,7 +266,7 @@ gettimeofday(&start, NULL);
 // *******************************************************
 // BIG LOOP START
 // *******************************************************
-int loop, big_loop = 100;
+int loop, big_loop = 50;
 
 for (loop = 0; loop < big_loop; loop++){
 
@@ -377,7 +377,7 @@ fflush(stdout);
 
 printf(" %f,  %f, %f \n", equation_parameters.s, V_max, dUdx_max);
 
-equation_parameters.s = equation_parameters.s + 0.0005; 
+equation_parameters.s = equation_parameters.s + 0.0002; 
 
 
 }
