@@ -273,7 +273,7 @@ int loop, big_loop = 40;
 int loop, big_loop = 1;
 #endif
 
-for (loop = 1; loop =< big_loop; loop++){
+for (loop = 1; loop <= big_loop; loop++){
 
 FLOAT V_max = 0.0;
 FLOAT dU_max = 0.0;
