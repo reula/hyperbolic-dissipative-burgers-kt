@@ -115,7 +115,8 @@ void ff_eq(struct GRID_PAR *grid_1d_ptr,
 #endif
 
 
-    FLOAT sx,sy,e,bx,by,B2,S2,div;
+//    FLOAT sx,sy,e,bx,by,B2,S2,div;
+//	FLOAT u;
 
     
     FLOAT s = (*function_par).s; // Value for By
@@ -220,15 +221,17 @@ void ff_eq(struct GRID_PAR *grid_1d_ptr,
 			}
 			
                 
+				/* 
+				// maximum propagation speed is 1
+				*/
+				a_p = fmax((fabs(u_pp[U]) + sqrt(u_pp[U]*u_pp[U] + 4.*s*c) ), (fabs(u_pm[U]) + sqrt(u_pm[U]*u_pm[U] + 4.*s*c)) )*0.5;
+				a_m = fmax((fabs(u_mp[U]) + sqrt(u_mp[U]*u_mp[U] + 4.*s*c) ), (fabs(u_mm[U]) + sqrt(u_mm[U]*u_mm[U] + 4.*s*c)) )*0.5;
 
-/* 
-		// maximum propagation speed is 1
-*/
-			a_p = 1.0;
-			a_m = 1.0;
 		
 	 
 			for (i = 0; i < N_FIELDS; ++i){ 
+				
+
 		
 				H_p[i] = 0.5*(Fx(u_pp, grid_1d_ptr, function_par,i) + Fx(u_pm, grid_1d_ptr, function_par,i));
 				H_p[i] = H_p[i] - 0.5*a_p*(u_pp[i]-u_pm[i]);
@@ -256,7 +259,8 @@ void ff_eq(struct GRID_PAR *grid_1d_ptr,
    
    //first point
    grid_ind1 = ni_1;
-   			a_p = 1.0;
+   
+   			a_p = 1.0; // CAMBIAR!
 		
    for (i = 0; i < N_FIELDS; ++i){ 
 		u_pp[i] = (*fields_ptr).u[i][(grid_ind1+1)];
@@ -274,7 +278,8 @@ void ff_eq(struct GRID_PAR *grid_1d_ptr,
 	
 	grid_ind1 = nf_1-1;
     
-			a_m = 1.0;
+			a_m = 1.0; // CAMBIAR!
+			
    for (i = 0; i < N_FIELDS; ++i){ 
 		u_pp[i] = (*fields_ptr).u[i][(grid_ind1)];
 		u_pm[i] = (*fields_ptr).u[i][grid_ind1-1];
@@ -371,7 +376,6 @@ static inline FLOAT mysign_zero(double d){
 
 /* -------------- Fluxes -------------------------*/
 
-// WARNING HARDCODED Bx = a.
 
 static inline FLOAT  Fx(double *u, struct GRID_PAR *grid_1d_ptr, struct FUNCTION_PAR *function_par,int i){
 	FLOAT c = (*function_par).c;

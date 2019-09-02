@@ -36,6 +36,8 @@
 #define PERIODIC
 //#undef PERIODIC
 
+#define BIG_LOOP // loop to change parameters 
+
 #ifdef FLUX
 #ifdef PERIODIC
 #define N_Ghost 0

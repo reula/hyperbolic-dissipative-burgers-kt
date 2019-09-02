@@ -267,7 +267,11 @@ gettimeofday(&start, NULL);
 // BIG LOOP START
 // *******************************************************
 
-int loop, big_loop = 50;
+#ifdef BIG_LOOP
+int loop, big_loop = 41;
+#else
+int loop, big_loop = 1;
+#endif
 
 for (loop = 0; loop < big_loop; loop++){
 
@@ -336,9 +340,9 @@ integ(&y,grd_ptr,equation_par_ptr,FF,RKX);
 get_max_V(&y, grd_ptr, &V_max);
 get_max_DU(&y, grd_ptr, &dU_max);
 
-
+#ifndef BIG_LOOP
 printf("time = %f, Energy = %f, V_max = %f, dU_max = %f \n", y.time, norm_Energy(grd_ptr, equation_par_ptr, &y), V_max, dU_max);
-
+#endif
 
       //printf("...");
       fflush(stdout);
@@ -380,10 +384,12 @@ fflush(stdout);
 // BIG LOOP END
 // ************************************************
 
+#ifdef BIG_LOOP
 printf(" %f,  %f, %f \n", equation_parameters.s, V_max, dU_max);
 
-equation_parameters.s = equation_parameters.s + 0.0002; 
+equation_parameters.s = equation_parameters.s + 0.05; 
 
+#endif //BIG_LOOP
 
 }
 // ************************************************

@@ -122,7 +122,8 @@ switch (initial_data_type){
 			x= xi + (FLOAT)g_ind1*one_dN1;
 		
 			//(*y_a_ptr).u[U][g_ind1] = (fabs(x)-0.5) < 0?  1.0:0.0;
-			(*y_a_ptr).u[U][g_ind1] = cos(PI*x) - 0.5;
+			//(*y_a_ptr).u[U][g_ind1] = cos(PI*x) - 0.5;
+			(*y_a_ptr).u[U][g_ind1] = 100.0*(cos(PI*x) - 0.5);
     	}
 
   break;
