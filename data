@@ -46,7 +46,7 @@ a=1. # This is Bx, it has to be given also as a0 for the initial data.
 # 
 c=5000. # normilized version
 #c=40. # This is V_t = c(U_x - V)
-s=0.1
+s=0.5
 #s=0.008 # This is U_t = U U_x - s V
 #
 #

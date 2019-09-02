@@ -268,12 +268,12 @@ gettimeofday(&start, NULL);
 // *******************************************************
 
 #ifdef BIG_LOOP
-int loop, big_loop = 41;
+int loop, big_loop = 40;
 #else
 int loop, big_loop = 1;
 #endif
 
-for (loop = 0; loop < big_loop; loop++){
+for (loop = 1; loop =< big_loop; loop++){
 
 FLOAT V_max = 0.0;
 FLOAT dU_max = 0.0;
@@ -387,7 +387,7 @@ fflush(stdout);
 #ifdef BIG_LOOP
 printf(" %f,  %f, %f \n", equation_parameters.s, V_max, dU_max);
 
-equation_parameters.s = equation_parameters.s + 0.05; 
+equation_parameters.s = equation_parameters.s + 0.015; 
 
 #endif //BIG_LOOP
 
