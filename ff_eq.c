@@ -49,20 +49,6 @@ void ff_eq(struct GRID_PAR *grid_1d_ptr,
 #endif
     FLOAT time;
     FLOAT x;
-#ifdef FLUX	
-    FLOAT u_pp[N_FIELDS], u_pm[N_FIELDS], u_mp[N_FIELDS], u_mm[N_FIELDS];
-    FLOAT Dp[N_FIELDS], Dpp[N_FIELDS], Dm[N_FIELDS], Dmm[N_FIELDS];
-    FLOAT v_x0[N_FIELDS], v_xp[N_FIELDS], v_xm[N_FIELDS];
-    FLOAT a_p, a_m, a_pp, a_pm, a_mp, a_mm;
-    FLOAT H_p[N_FIELDS], H_m[N_FIELDS];
-	//    FLOAT theta = 1.;   // factor for limiter
-	//    FLOAT theta = 2.;   // factor for limiter
-    FLOAT theta = 1.5;   // factor for limiter
-#endif 
-
-#ifdef SOURCE
-	FLOAT u[N_FIELDS];
-#endif
 
 #ifdef F_DIFF
 	FLOAT u[N_FIELDS], u_ext[N_FIELDS];
@@ -97,8 +83,8 @@ void ff_eq(struct GRID_PAR *grid_1d_ptr,
   	L=factor*L;
 	
 	
-	FLOAT U0[N_FIELDS], UP[N_FIELDS], UM[N_FIELDS], T0[N_FIELDS], TP[N_FIELDS], TM[N_FIELDS], V0, VP, VM;
-   
+//	FLOAT U0[N_FIELDS], UP[N_FIELDS], UM[N_FIELDS], T0[N_FIELDS], TP[N_FIELDS], TM[N_FIELDS], V0, VP, VM;
+/*   
    	{int i;
    	for (i = 0; i < N_FIELDS; ++i){
 		   U0[i]=0.0;
@@ -109,6 +95,7 @@ void ff_eq(struct GRID_PAR *grid_1d_ptr,
 		   TM[i]=0.0;
 	   }
 	}
+*/
 
 #endif // PERIODIC
 
@@ -174,7 +161,8 @@ void ff_eq(struct GRID_PAR *grid_1d_ptr,
   /* inner points */
 #ifdef FLUX    
 	{register int grid_ind1, i;
-//#pragma omp parallel for 
+
+#pragma omp parallel for 
 
         // here we go one point inside the ghost zone (the -1 in the second line reaches the first point)
 #ifdef PERIODIC
@@ -182,6 +170,15 @@ void ff_eq(struct GRID_PAR *grid_1d_ptr,
 #else             
 		for (grid_ind1 = ni_1+1; grid_ind1< nf_1-1; ++grid_ind1){ 
 #endif
+
+
+    FLOAT Dp[N_FIELDS], Dm[N_FIELDS]; //Dpp[N_FIELDS], Dmm[N_FIELDS];
+    
+
+	//    FLOAT theta = 1.;   // factor for limiter
+	//    FLOAT theta = 2.;   // factor for limiter
+    FLOAT theta = 1.5;   // factor for limiter
+ 
 			for (i = 0; i < N_FIELDS; ++i){ 
                 
                 Dp[i] = (*fields_ptr).u[i][(grid_ind1+1) % n_mod] - (*fields_ptr).u[i][grid_ind1];
@@ -197,13 +194,22 @@ void ff_eq(struct GRID_PAR *grid_1d_ptr,
                 
 
 	{register int grid_ind1, i;
-//	#pragma omp parallel for 
+
+#pragma omp parallel for 
 
 #ifdef PERIODIC
 		for (grid_ind1 = ni_1; grid_ind1< nf_1; ++grid_ind1){
 #else        
 		for (grid_ind1 = ni_1+1; grid_ind1< nf_1-1; ++grid_ind1){ 
 #endif
+
+    FLOAT u_pp[N_FIELDS], u_pm[N_FIELDS], u_mp[N_FIELDS], u_mm[N_FIELDS], u[N_FIELDS];
+
+    FLOAT v_x0[N_FIELDS], v_xp[N_FIELDS], v_xm[N_FIELDS];
+    FLOAT a_p, a_m, a_pp, a_pm, a_mp, a_mm;
+    FLOAT H_p[N_FIELDS], H_m[N_FIELDS];
+
+
 			for (i = 0; i < N_FIELDS; ++i){ 
 
 				v_x0[i] = globals.auxfields.u_aux[i][grid_ind1];
