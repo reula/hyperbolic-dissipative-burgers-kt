@@ -2,7 +2,7 @@
 * Here are the global definitions used by all the subroutines        *
 *                                                                    *       
 *********************************************************************/
-  
+   
 #ifdef FIRST_MACRO_1D_H
 #else 
 #define FIRST_MACRO_1D_H

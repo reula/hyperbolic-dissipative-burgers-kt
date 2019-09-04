@@ -87,7 +87,7 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.000000
-@timestamp def "Tue Sep  3 13:54:37 2019"
+@timestamp def "Wed Sep  4 12:57:43 2019"
 @r0 off
 @link r0 to g0
 @r0 type above
@@ -134,7 +134,7 @@
 @g0 fixedpoint format general general
 @g0 fixedpoint prec 6, 6
 @with g0
-@    world 0.450735294118, 0.714136963509, 1.18970588235, 65.2477930058
+@    world 0.5, 0.398107171, 1.2, 100
 @    stack world 0, 0, 0, 0
 @    znorm 1
 @    view 0.150000, 0.150000, 1.150000, 0.850000
@@ -146,7 +146,7 @@
 @    subtitle font 0
 @    subtitle size 1.000000
 @    subtitle color 1
-@    xaxes scale Normal
+@    xaxes scale Logarithmic
 @    yaxes scale Logarithmic
 @    xaxes invert off
 @    yaxes invert off
@@ -165,7 +165,7 @@
 @    xaxis  label color 1
 @    xaxis  label place normal
 @    xaxis  tick on
-@    xaxis  tick major 0.1
+@    xaxis  tick major 10
 @    xaxis  tick minor ticks 9
 @    xaxis  tick default 6
 @    xaxis  tick place rounded true
@@ -816,6 +816,55 @@
 @    s10 errorbar riser clip length 0.100000
 @    s10 comment "Cols 1:3"
 @    s10 legend  "3200"
+@    s12 hidden false
+@    s12 type xy
+@    s12 symbol 0
+@    s12 symbol size 1.000000
+@    s12 symbol color 15
+@    s12 symbol pattern 1
+@    s12 symbol fill color 15
+@    s12 symbol fill pattern 0
+@    s12 symbol linewidth 1.0
+@    s12 symbol linestyle 1
+@    s12 symbol char 65
+@    s12 symbol char font 0
+@    s12 symbol skip 0
+@    s12 line type 1
+@    s12 line linestyle 1
+@    s12 line linewidth 1.0
+@    s12 line color 15
+@    s12 line pattern 1
+@    s12 baseline type 0
+@    s12 baseline off
+@    s12 dropline off
+@    s12 fill type 0
+@    s12 fill rule 0
+@    s12 fill color 1
+@    s12 fill pattern 1
+@    s12 avalue off
+@    s12 avalue type 2
+@    s12 avalue char size 1.000000
+@    s12 avalue font 0
+@    s12 avalue color 1
+@    s12 avalue rot 0
+@    s12 avalue format general
+@    s12 avalue prec 3
+@    s12 avalue prepend ""
+@    s12 avalue append ""
+@    s12 avalue offset 0.000000 , 0.000000
+@    s12 errorbar on
+@    s12 errorbar place both
+@    s12 errorbar color 15
+@    s12 errorbar pattern 1
+@    s12 errorbar size 1.000000
+@    s12 errorbar linewidth 1.0
+@    s12 errorbar linestyle 1
+@    s12 errorbar riser linewidth 1.0
+@    s12 errorbar riser linestyle 1
+@    s12 errorbar riser clip off
+@    s12 errorbar riser clip length 0.100000
+@    s12 comment "Cols 1:3"
+@    s12 legend  "25600"
 @target G0.S0
 @type xy
 0.9 72.297853
@@ -1333,4 +1382,47 @@
 1.055 3.728851
 1.07 3.601705
 1.085 3.486984
+&
+@target G0.S12
+@type xy
+0.5 43.74412
+0.515 41.372513
+0.53 39.054008
+0.545 37.459008
+0.56 35.178558
+0.575 33.046317
+0.59 31.041742
+0.605 29.616884
+0.62 27.443443
+0.635 26.100468
+0.65 24.839485
+0.665 22.954549
+0.68 21.289828
+0.695 19.287766
+0.71 17.663001
+0.725 16.32216
+0.74 14.638311
+0.755 13.245455
+0.77 12.36339
+0.785 10.908644
+0.8 9.55797
+0.815 8.537636
+0.83 7.664915
+0.845 6.945953
+0.86 6.064844
+0.875 5.185875
+0.89 4.270919
+0.905 3.345747
+0.92 2.513163
+0.935 1.757479
+0.95 1.13627
+0.965 0.68989
+0.98 0.602216
+0.995 0.560866
+1.01 0.530378
+1.025 0.505995
+1.04 0.485239
+1.055 0.467085
+1.07 0.450937
+1.085 0.436472
 &

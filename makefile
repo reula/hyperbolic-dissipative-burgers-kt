@@ -5,7 +5,7 @@
 CC=gcc
 #CC=icc
 # CFLAGS= -O3 -Wall -ggdb3
-CFLAGS= -O3 -Wall -m64 -std=c99 -openmp
+CFLAGS= -O3 -Wall -m64 -std=c99 #-openmp
 # $(CC) $(CFLAGS) 
 
 all: ff_exec ff_main.o adisco_1d.o inidat.o  integ.o rkc.o ff_eq.o  util.o input.o derivs_1d.o pygraph.o 
